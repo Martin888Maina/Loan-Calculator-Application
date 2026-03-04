@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-surface-bg text-surface-primary font-sans;
+    margin: 0;
+    min-height: 100vh;
+  }
+
+  .dark body {
+    @apply bg-dark-bg text-dark-primary;
+  }
+
+  /* tabular numbers for all monetary/numeric displays */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-surface-card rounded-xl shadow-sm border border-surface-border p-6;
+  }
+
+  .dark .card {
+    @apply bg-dark-card border-dark-border;
+  }
+
+  .btn-primary {
+    @apply bg-brand-teal text-white px-4 py-2 rounded-lg font-medium hover:bg-teal-700 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-teal focus:ring-offset-2;
+  }
+
+  .btn-secondary {
+    @apply bg-white text-surface-primary px-4 py-2 rounded-lg font-medium border border-surface-border hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-teal focus:ring-offset-2;
+  }
+
+  .dark .btn-secondary {
+    @apply bg-dark-card text-dark-primary border-dark-border hover:bg-gray-700;
+  }
+
+  .input-field {
+    @apply w-full border border-surface-border rounded-lg px-3 py-2 text-surface-primary bg-white focus:outline-none focus:ring-2 focus:ring-brand-teal focus:border-transparent transition-colors;
+  }
+
+  .dark .input-field {
+    @apply border-dark-border bg-dark-card text-dark-primary;
+  }
+
+  .label {
+    @apply block text-sm font-medium text-surface-secondary mb-1;
+  }
+
+  .dark .label {
+    @apply text-dark-secondary;
+  }
+
+  .error-text {
+    @apply text-brand-red text-xs mt-1;
+  }
+}
