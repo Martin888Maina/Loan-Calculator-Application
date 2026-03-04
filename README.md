@@ -6,14 +6,6 @@ Built as a fintech portfolio project demonstrating modern frontend development w
 
 ---
 
-## Screenshots
-
-![Calculator Page](docs/screenshot-calculator.png)
-![Comparison Page](docs/screenshot-comparison.png)
-![Affordability Page](docs/screenshot-affordability.png)
-
----
-
 ## Features
 
 ### 1. Core Loan Calculator
