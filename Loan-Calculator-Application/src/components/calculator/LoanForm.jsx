@@ -4,131 +4,172 @@ import { useLoan } from '../../context/LoanContext';
 import { DEFAULTS, LOAN_TYPES, LIMITS } from '../../utils/constants';
 import Tooltip from '../common/Tooltip';
 
+// slider + number input combo — they stay in sync with each other
+function SliderInput({ label, name, register, setValue, watch, min, max, step = 1, tooltip, error, unit }) {
+  const value = watch(name);
+
+  return (
+    <div>
+      <label className="label flex items-center gap-1">
+        {label}
+        {tooltip && <Tooltip text={tooltip} />}
+      </label>
+      <div className="flex items-center gap-2 mb-1.5">
+        <input
+          type="number"
+          step={step}
+          className={`input-field w-28 flex-shrink-0 ${error ? 'border-brand-red' : ''}`}
+          {...register(name)}
+        />
+        {unit && (
+          <span className="text-xs text-surface-secondary dark:text-dark-secondary flex-shrink-0">{unit}</span>
+        )}
+      </div>
+      <input
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        value={parseFloat(value) || min}
+        onChange={e => setValue(name, parseFloat(e.target.value), { shouldValidate: true })}
+        className="w-full"
+      />
+      <div className="flex justify-between text-[10px] text-surface-secondary dark:text-dark-secondary mt-0.5">
+        <span>{min}{unit ? unit : ''}</span>
+        <span>{max}{unit ? unit : ''}</span>
+      </div>
+      {error && <p className="error-text">{error.message}</p>}
+    </div>
+  );
+}
+
 export default function LoanForm() {
   const { state, setInput } = useLoan();
-  const { inputs } = state;
 
   const {
     register,
     watch,
     control,
+    setValue,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      loanAmount: DEFAULTS.loanAmount,
-      annualRate: DEFAULTS.annualRate,
-      termYears: DEFAULTS.termYears,
-      termMonths: DEFAULTS.termYears * 12,
-      termUnit: 'years',
-      startDate: DEFAULTS.startDate,
-      loanType: 'fixed',
-      armInitialPeriod: 5,
-      armNewRate: '',
+      loanAmount:         DEFAULTS.loanAmount,
+      annualRate:         DEFAULTS.annualRate,
+      termYears:          DEFAULTS.termYears,
+      termMonths:         DEFAULTS.termYears * 12,
+      termUnit:           'years',
+      startDate:          DEFAULTS.startDate,
+      loanType:           'fixed',
+      armInitialPeriod:   5,
+      armNewRate:         '',
       interestOnlyPeriod: 5,
-      balloonAmortYears: 30,
-      extraMonthly: '',
-      lumpSumAmount: '',
-      lumpSumMonth: '',
+      balloonAmortYears:  30,
+      extraMonthly:       '',
+      lumpSumAmount:      '',
+      lumpSumMonth:       '',
     },
     mode: 'onChange',
   });
 
   const watchedValues = watch();
 
-  // sync every field change into LoanContext so the calculator hook stays reactive
+  // push every change into LoanContext so the calculator hook re-runs reactively
   useEffect(() => {
     Object.entries(watchedValues).forEach(([field, value]) => {
       setInput(field, value);
     });
   }, [JSON.stringify(watchedValues)]);
 
-  const loanType = watchedValues.loanType;
-  const termUnit = watchedValues.termUnit;
-  const hasExtraMonthly = parseFloat(watchedValues.extraMonthly) > 0;
+  const loanType  = watchedValues.loanType;
+  const termUnit  = watchedValues.termUnit;
   const hasLumpSum = parseFloat(watchedValues.lumpSumAmount) > 0;
 
   return (
     <div className="space-y-6">
-      {/* main loan inputs */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {/* loan amount */}
-        <div>
-          <label className="label flex items-center gap-1">
-            Loan Amount
-            <Tooltip text="The total amount you want to borrow." />
-          </label>
+
+      {/* loan amount — slider from 10k to 50M */}
+      <SliderInput
+        label="Loan Amount"
+        name="loanAmount"
+        register={register}
+        setValue={setValue}
+        watch={watch}
+        min={10000}
+        max={10000000}
+        step={10000}
+        tooltip="The total amount you want to borrow."
+        error={errors.loanAmount}
+      />
+
+      {/* interest rate — slider 0 to 30% */}
+      <SliderInput
+        label="Annual Interest Rate"
+        name="annualRate"
+        register={register}
+        setValue={setValue}
+        watch={watch}
+        min={0}
+        max={30}
+        step={0.25}
+        unit="%"
+        tooltip="The yearly interest rate. Enter 0 for an interest-free loan."
+        error={errors.annualRate}
+      />
+
+      {/* loan term */}
+      <div>
+        <label className="label">Loan Term</label>
+        <div className="flex gap-2 mb-1.5">
           <input
             type="number"
-            className={`input-field ${errors.loanAmount ? 'border-brand-red' : ''}`}
-            {...register('loanAmount', {
+            className={`input-field flex-1 ${errors.termYears || errors.termMonths ? 'border-brand-red' : ''}`}
+            {...register(termUnit === 'years' ? 'termYears' : 'termMonths', {
               required: 'Required',
-              min: { value: 1, message: 'Must be at least 1' },
-              max: { value: LIMITS.maxLoanAmount, message: 'Too large' },
+              min: { value: 1, message: 'Min 1' },
+              max: {
+                value: termUnit === 'years' ? LIMITS.maxTermYears : LIMITS.maxTermMonths,
+                message: termUnit === 'years' ? 'Max 50 years' : 'Max 600 months',
+              },
             })}
           />
-          {errors.loanAmount && <p className="error-text">{errors.loanAmount.message}</p>}
-        </div>
-
-        {/* interest rate */}
-        <div>
-          <label className="label flex items-center gap-1">
-            Annual Interest Rate (%)
-            <Tooltip text="The yearly interest rate on the loan. Enter 0 for an interest-free loan." />
-          </label>
-          <input
-            type="number"
-            step="0.01"
-            className={`input-field ${errors.annualRate ? 'border-brand-red' : ''}`}
-            {...register('annualRate', {
-              required: 'Required',
-              min: { value: 0, message: 'Cannot be negative' },
-              max: { value: LIMITS.maxRate, message: 'Cannot exceed 100%' },
-            })}
-          />
-          {errors.annualRate && <p className="error-text">{errors.annualRate.message}</p>}
-        </div>
-
-        {/* loan term with unit toggle */}
-        <div>
-          <label className="label">Loan Term</label>
-          <div className="flex gap-2">
-            <input
-              type="number"
-              className={`input-field flex-1 ${errors.termYears || errors.termMonths ? 'border-brand-red' : ''}`}
-              {...register(termUnit === 'years' ? 'termYears' : 'termMonths', {
-                required: 'Required',
-                min: { value: 1, message: 'Min 1' },
-                max: {
-                  value: termUnit === 'years' ? LIMITS.maxTermYears : LIMITS.maxTermMonths,
-                  message: termUnit === 'years' ? 'Max 50 years' : 'Max 600 months',
-                },
-              })}
-            />
-            <Controller
-              name="termUnit"
-              control={control}
-              render={({ field }) => (
-                <select {...field} className="input-field w-28">
-                  <option value="years">Years</option>
-                  <option value="months">Months</option>
-                </select>
-              )}
-            />
-          </div>
-          {(errors.termYears || errors.termMonths) && (
-            <p className="error-text">{(errors.termYears || errors.termMonths)?.message}</p>
-          )}
-        </div>
-
-        {/* start date */}
-        <div>
-          <label className="label">Start Date</label>
-          <input
-            type="month"
-            className="input-field"
-            {...register('startDate')}
+          <Controller
+            name="termUnit"
+            control={control}
+            render={({ field }) => (
+              <select {...field} className="input-field w-28">
+                <option value="years">Years</option>
+                <option value="months">Months</option>
+              </select>
+            )}
           />
         </div>
+        {/* term slider — switches range based on unit */}
+        <input
+          type="range"
+          min={termUnit === 'years' ? 1 : 12}
+          max={termUnit === 'years' ? 50 : 360}
+          step={termUnit === 'years' ? 1 : 12}
+          value={parseInt(termUnit === 'years' ? watchedValues.termYears : watchedValues.termMonths) || 1}
+          onChange={e => {
+            const field = termUnit === 'years' ? 'termYears' : 'termMonths';
+            setValue(field, parseInt(e.target.value), { shouldValidate: true });
+          }}
+          className="w-full"
+        />
+        <div className="flex justify-between text-[10px] text-surface-secondary dark:text-dark-secondary mt-0.5">
+          <span>{termUnit === 'years' ? '1y' : '12mo'}</span>
+          <span>{termUnit === 'years' ? '50y' : '360mo'}</span>
+        </div>
+        {(errors.termYears || errors.termMonths) && (
+          <p className="error-text">{(errors.termYears || errors.termMonths)?.message}</p>
+        )}
+      </div>
+
+      {/* start date */}
+      <div>
+        <label className="label">Start Date</label>
+        <input type="month" className="input-field" {...register('startDate')} />
       </div>
 
       {/* loan type selector */}
@@ -157,7 +198,7 @@ export default function LoanForm() {
         </div>
       </div>
 
-      {/* conditional fields for ARM */}
+      {/* ARM extra fields */}
       {loanType === 'arm' && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 bg-brand-blue/5 rounded-lg border border-brand-blue/20">
           <div>
@@ -174,7 +215,7 @@ export default function LoanForm() {
         </div>
       )}
 
-      {/* conditional fields for interest-only */}
+      {/* interest-only extra field */}
       {loanType === 'interest-only' && (
         <div className="p-4 bg-brand-blue/5 rounded-lg border border-brand-blue/20">
           <label className="label flex items-center gap-1">
@@ -185,7 +226,7 @@ export default function LoanForm() {
         </div>
       )}
 
-      {/* conditional fields for balloon */}
+      {/* balloon extra field */}
       {loanType === 'balloon' && (
         <div className="p-4 bg-brand-amber/5 rounded-lg border border-brand-amber/20">
           <label className="label flex items-center gap-1">
@@ -196,7 +237,7 @@ export default function LoanForm() {
         </div>
       )}
 
-      {/* extra payments section */}
+      {/* extra payments */}
       <div>
         <h3 className="text-sm font-semibold text-surface-primary dark:text-dark-primary mb-3">
           Extra Payments <span className="text-surface-secondary dark:text-dark-secondary font-normal">(optional)</span>
@@ -224,6 +265,7 @@ export default function LoanForm() {
           )}
         </div>
       </div>
+
     </div>
   );
 }

@@ -1,28 +1,28 @@
-import { useState } from 'react';
+import { useState, useMemo, memo } from 'react';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import { useCurrency } from '../../context/CurrencyContext';
 import { groupByYear } from '../../utils/loanMath';
 import EmptyState from '../common/EmptyState';
 
-function YearRow({ year, rows, showExtra }) {
+// memo so individual year rows don't re-render unless their data changes
+const YearRow = memo(function YearRow({ year, rows, showExtra }) {
   const [open, setOpen] = useState(false);
   const { format } = useCurrency();
 
-  const yearTotals = rows.reduce(
+  const yearTotals = useMemo(() => rows.reduce(
     (acc, r) => ({
-      payment: acc.payment + r.payment,
+      payment:   acc.payment   + r.payment,
       principal: acc.principal + r.principal,
-      interest: acc.interest + r.interest,
-      extra: acc.extra + r.extra,
+      interest:  acc.interest  + r.interest,
+      extra:     acc.extra     + r.extra,
     }),
     { payment: 0, principal: 0, interest: 0, extra: 0 }
-  );
+  ), [rows]);
 
   const lastBalance = rows[rows.length - 1]?.balance ?? 0;
 
   return (
     <>
-      {/* year summary row — clickable to expand */}
       <tr
         className="bg-gray-50 dark:bg-gray-800/50 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors"
         onClick={() => setOpen(o => !o)}
@@ -40,7 +40,6 @@ function YearRow({ year, rows, showExtra }) {
         <td className="px-4 py-3 text-right tabular-nums">{format(lastBalance)}</td>
       </tr>
 
-      {/* individual month rows */}
       {open && rows.map(row => (
         <tr key={row.month} className="border-t border-surface-border/30 dark:border-dark-border/30 hover:bg-gray-50/50 dark:hover:bg-gray-800/30">
           <td className="px-4 py-2 pl-10 text-sm text-surface-secondary dark:text-dark-secondary">{row.date}</td>
@@ -57,10 +56,23 @@ function YearRow({ year, rows, showExtra }) {
       ))}
     </>
   );
-}
+});
 
-export default function AmortizationTable({ schedule, showExtra = false }) {
+export default memo(function AmortizationTable({ schedule, showExtra = false }) {
   const { format } = useCurrency();
+
+  // group by year once — avoids re-running on every render when only currency changes
+  const grouped = useMemo(() => groupByYear(schedule || []), [schedule]);
+
+  const totals = useMemo(() => (schedule || []).reduce(
+    (acc, r) => ({
+      payment:   acc.payment   + r.payment,
+      principal: acc.principal + r.principal,
+      interest:  acc.interest  + r.interest,
+      extra:     acc.extra     + r.extra,
+    }),
+    { payment: 0, principal: 0, interest: 0, extra: 0 }
+  ), [schedule]);
 
   if (!schedule || schedule.length === 0) {
     return (
@@ -71,19 +83,8 @@ export default function AmortizationTable({ schedule, showExtra = false }) {
     );
   }
 
-  const grouped = groupByYear(schedule);
-  const totals = schedule.reduce(
-    (acc, r) => ({
-      payment: acc.payment + r.payment,
-      principal: acc.principal + r.principal,
-      interest: acc.interest + r.interest,
-      extra: acc.extra + r.extra,
-    }),
-    { payment: 0, principal: 0, interest: 0, extra: 0 }
-  );
-
   return (
-    <div className="overflow-x-auto rounded-xl border border-surface-border dark:border-dark-border">
+    <div className="overflow-x-auto rounded-xl border border-surface-border dark:border-dark-border scrollbar-thin">
       <table className="w-full text-sm">
         <thead>
           <tr className="bg-gray-50 dark:bg-gray-800 text-surface-secondary dark:text-dark-secondary text-xs uppercase tracking-wide">
@@ -100,7 +101,6 @@ export default function AmortizationTable({ schedule, showExtra = false }) {
             <YearRow key={year} year={year} rows={rows} showExtra={showExtra} />
           ))}
         </tbody>
-        {/* running totals footer */}
         <tfoot>
           <tr className="bg-brand-teal/5 dark:bg-brand-teal/10 font-semibold border-t-2 border-brand-teal/30">
             <td className="px-4 py-3 text-surface-primary dark:text-dark-primary">Totals</td>
@@ -114,4 +114,4 @@ export default function AmortizationTable({ schedule, showExtra = false }) {
       </table>
     </div>
   );
-}
+});

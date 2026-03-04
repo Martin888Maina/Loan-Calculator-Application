@@ -3,60 +3,133 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
   body {
     @apply bg-surface-bg text-surface-primary font-sans;
     margin: 0;
     min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
+  /* dark mode body background — applied via class on <html> */
   .dark body {
     @apply bg-dark-bg text-dark-primary;
   }
 
-  /* tabular numbers for all monetary/numeric displays */
   .tabular-nums {
     font-variant-numeric: tabular-nums;
+  }
+
+  /* smoother dark mode transitions — everything except images */
+  *,
+  *::before,
+  *::after {
+    transition-property: background-color, border-color, color;
+    transition-duration: 150ms;
+    transition-timing-function: ease;
+  }
+
+  /* turn off transitions on elements that shouldn't animate (avoid chart flicker) */
+  svg *, canvas {
+    transition: none !important;
+  }
+
+  /* range slider — consistent across browsers */
+  input[type='range'] {
+    @apply w-full h-1.5 rounded-full appearance-none cursor-pointer;
+    background: #E5E7EB;
+  }
+
+  .dark input[type='range'] {
+    background: #374151;
+  }
+
+  input[type='range']::-webkit-slider-thumb {
+    @apply appearance-none w-4 h-4 rounded-full bg-brand-teal shadow-sm;
+    border: 2px solid white;
+  }
+
+  input[type='range']::-moz-range-thumb {
+    @apply w-4 h-4 rounded-full bg-brand-teal shadow-sm border-2 border-white;
+  }
+
+  input[type='range']:focus {
+    @apply outline-none;
+  }
+
+  input[type='range']:focus::-webkit-slider-thumb {
+    @apply ring-2 ring-brand-teal ring-offset-1;
   }
 }
 
 @layer components {
   .card {
-    @apply bg-surface-card rounded-xl shadow-sm border border-surface-border p-6;
-  }
-
-  .dark .card {
-    @apply bg-dark-card border-dark-border;
+    @apply bg-surface-card dark:bg-dark-card rounded-xl shadow-sm border border-surface-border dark:border-dark-border p-6;
   }
 
   .btn-primary {
-    @apply bg-brand-teal text-white px-4 py-2 rounded-lg font-medium hover:bg-teal-700 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-teal focus:ring-offset-2;
+    @apply bg-brand-teal text-white px-4 py-2 rounded-lg font-medium
+           hover:bg-teal-700 active:bg-teal-800
+           transition-colors focus:outline-none focus:ring-2 focus:ring-brand-teal focus:ring-offset-2;
   }
 
   .btn-secondary {
-    @apply bg-white text-surface-primary px-4 py-2 rounded-lg font-medium border border-surface-border hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-teal focus:ring-offset-2;
-  }
-
-  .dark .btn-secondary {
-    @apply bg-dark-card text-dark-primary border-dark-border hover:bg-gray-700;
+    @apply bg-white dark:bg-dark-card text-surface-primary dark:text-dark-primary
+           px-4 py-2 rounded-lg font-medium
+           border border-surface-border dark:border-dark-border
+           hover:bg-gray-50 dark:hover:bg-gray-700
+           transition-colors focus:outline-none focus:ring-2 focus:ring-brand-teal focus:ring-offset-2;
   }
 
   .input-field {
-    @apply w-full border border-surface-border rounded-lg px-3 py-2 text-surface-primary bg-white focus:outline-none focus:ring-2 focus:ring-brand-teal focus:border-transparent transition-colors;
-  }
-
-  .dark .input-field {
-    @apply border-dark-border bg-dark-card text-dark-primary;
+    @apply w-full border border-surface-border dark:border-dark-border rounded-lg px-3 py-2
+           text-surface-primary dark:text-dark-primary
+           bg-white dark:bg-dark-card
+           placeholder-gray-400 dark:placeholder-gray-500
+           focus:outline-none focus:ring-2 focus:ring-brand-teal focus:border-transparent
+           transition-colors;
   }
 
   .label {
-    @apply block text-sm font-medium text-surface-secondary mb-1;
-  }
-
-  .dark .label {
-    @apply text-dark-secondary;
+    @apply block text-sm font-medium text-surface-secondary dark:text-dark-secondary mb-1;
   }
 
   .error-text {
     @apply text-brand-red text-xs mt-1;
+  }
+
+  /* skeleton loading pulse used on deferred content */
+  .skeleton {
+    @apply animate-pulse bg-gray-200 dark:bg-gray-700 rounded;
+  }
+}
+
+/* custom scrollbar — subtle, consistent with design */
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: #E5E7EB transparent;
+  }
+
+  .dark .scrollbar-thin {
+    scrollbar-color: #374151 transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: #E5E7EB;
+    border-radius: 9999px;
+  }
+
+  .dark .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: #374151;
   }
 }
