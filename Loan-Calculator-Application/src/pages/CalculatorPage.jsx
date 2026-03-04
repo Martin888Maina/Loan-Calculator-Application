@@ -7,6 +7,7 @@ import ExtraPaymentImpact from '../components/extra-payments/ExtraPaymentImpact'
 import PrincipalInterestPie from '../components/charts/PrincipalInterestPie';
 import AmortizationLineChart from '../components/charts/AmortizationLineChart';
 import BalanceAreaChart from '../components/charts/BalanceAreaChart';
+import { ScheduleExportButtons } from '../components/export/ExportButtons';
 import { useLoan } from '../context/LoanContext';
 import { useLoanCalculator } from '../hooks/useLoanCalculator';
 import { useExtraPayments } from '../hooks/useExtraPayments';
@@ -24,8 +25,8 @@ export default function CalculatorPage() {
   const showExtra       = !!extraImpact;
 
   // pass both schedules to the balance chart so it can overlay them
-  const baseScheduleForChart  = extraImpact ? extraImpact.base.schedule       : schedule;
-  const extraScheduleForChart = extraImpact ? extraImpact.withExtra.schedule  : null;
+  const baseScheduleForChart  = extraImpact ? extraImpact.base.schedule      : schedule;
+  const extraScheduleForChart = extraImpact ? extraImpact.withExtra.schedule : null;
 
   return (
     <PageWrapper>
@@ -81,9 +82,9 @@ export default function CalculatorPage() {
             </Card>
           )}
 
-          {/* amortization schedule table */}
+          {/* amortization schedule table with export buttons in the header */}
           <Card className="p-0 overflow-hidden">
-            <div className="px-6 py-4 border-b border-surface-border dark:border-dark-border flex items-center justify-between">
+            <div className="px-6 py-4 border-b border-surface-border dark:border-dark-border flex items-center justify-between flex-wrap gap-3">
               <div>
                 <h2 className="text-base font-semibold text-surface-primary dark:text-dark-primary">
                   Amortization Schedule
@@ -92,11 +93,18 @@ export default function CalculatorPage() {
                   <p className="text-xs text-brand-green mt-0.5">Showing schedule with extra payments applied</p>
                 )}
               </div>
-              {isValid && (
-                <span className="text-xs text-surface-secondary dark:text-dark-secondary">
-                  {displaySchedule.length} payments
-                </span>
-              )}
+              <div className="flex items-center gap-3">
+                {isValid && (
+                  <span className="text-xs text-surface-secondary dark:text-dark-secondary">
+                    {displaySchedule.length} payments
+                  </span>
+                )}
+                <ScheduleExportButtons
+                  schedule={displaySchedule}
+                  summary={displaySummary}
+                  inputs={inputs}
+                />
+              </div>
             </div>
             <div className="p-6">
               <AmortizationTable schedule={displaySchedule} showExtra={showExtra} />
