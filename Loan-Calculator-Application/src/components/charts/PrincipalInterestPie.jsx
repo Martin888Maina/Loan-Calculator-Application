@@ -1,10 +1,10 @@
+import { memo } from 'react';
 import {
   PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer,
 } from 'recharts';
 import { useCurrency } from '../../context/CurrencyContext';
 
-// custom centre label for the donut hole
-function CentreLabel({ cx, cy, principal, interest, format }) {
+function CentreLabel({ cx, cy, principal, interest }) {
   const total = principal + interest;
   const pct = total > 0 ? Math.round((principal / total) * 100) : 0;
   return (
@@ -30,7 +30,9 @@ const CustomTooltip = ({ active, payload, format }) => {
   );
 };
 
-export default function PrincipalInterestPie({ summary }) {
+const COLORS = ['#14B8A6', '#F97316'];
+
+export default memo(function PrincipalInterestPie({ summary }) {
   const { format } = useCurrency();
   if (!summary) return null;
 
@@ -41,9 +43,6 @@ export default function PrincipalInterestPie({ summary }) {
     { name: 'Principal', value: principal },
     { name: 'Interest',  value: interest  },
   ];
-
-  // teal for principal, coral for interest — consistent with table column colours
-  const COLORS = ['#14B8A6', '#F97316'];
 
   return (
     <div>
@@ -66,24 +65,18 @@ export default function PrincipalInterestPie({ summary }) {
             {data.map((_, i) => (
               <Cell key={i} fill={COLORS[i]} stroke="none" />
             ))}
-            {/* centre label rendered as a custom label */}
-            <CentreLabel
-              cx={0} cy={0}
-              principal={principal}
-              interest={interest}
-              format={format}
-            />
+            <CentreLabel cx={0} cy={0} principal={principal} interest={interest} />
           </Pie>
           <Tooltip content={<CustomTooltip format={format} />} />
           <Legend
             iconType="circle"
             iconSize={10}
-            formatter={(value) => (
-              <span className="text-xs text-surface-secondary dark:text-dark-secondary">{value}</span>
+            formatter={v => (
+              <span className="text-xs text-surface-secondary dark:text-dark-secondary">{v}</span>
             )}
           />
         </PieChart>
       </ResponsiveContainer>
     </div>
   );
-}
+});
