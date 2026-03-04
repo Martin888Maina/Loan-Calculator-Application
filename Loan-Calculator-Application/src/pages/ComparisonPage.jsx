@@ -3,6 +3,7 @@ import Card from '../components/common/Card';
 import ComparisonForm from '../components/comparison/ComparisonForm';
 import ComparisonTable from '../components/comparison/ComparisonTable';
 import WinnerSummary from '../components/comparison/WinnerSummary';
+import ComparisonBarChart from '../components/charts/ComparisonBarChart';
 import { useComparison } from '../hooks/useComparison';
 import { BarChart2 } from 'lucide-react';
 import { useCurrency } from '../context/CurrencyContext';
@@ -71,6 +72,11 @@ export default function ComparisonPage() {
               <div className="p-6">
                 <ComparisonTable scenarios={scenarios} results={results} />
               </div>
+            </Card>
+
+            {/* comparison bar chart */}
+            <Card>
+              <ComparisonBarChart scenarios={scenarios} results={results} />
             </Card>
 
             {/* per-scenario detail cards */}
