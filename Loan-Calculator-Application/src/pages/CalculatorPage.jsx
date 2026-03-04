@@ -4,6 +4,9 @@ import LoanForm from '../components/calculator/LoanForm';
 import PaymentSummaryCards from '../components/calculator/PaymentSummaryCards';
 import AmortizationTable from '../components/calculator/AmortizationTable';
 import ExtraPaymentImpact from '../components/extra-payments/ExtraPaymentImpact';
+import PrincipalInterestPie from '../components/charts/PrincipalInterestPie';
+import AmortizationLineChart from '../components/charts/AmortizationLineChart';
+import BalanceAreaChart from '../components/charts/BalanceAreaChart';
 import { useLoan } from '../context/LoanContext';
 import { useLoanCalculator } from '../hooks/useLoanCalculator';
 import { useExtraPayments } from '../hooks/useExtraPayments';
@@ -19,6 +22,10 @@ export default function CalculatorPage() {
   const displaySchedule = extraImpact ? extraImpact.withExtra.schedule : schedule;
   const displaySummary  = extraImpact ? extraImpact.withExtra.summary  : summary;
   const showExtra       = !!extraImpact;
+
+  // pass both schedules to the balance chart so it can overlay them
+  const baseScheduleForChart  = extraImpact ? extraImpact.base.schedule       : schedule;
+  const extraScheduleForChart = extraImpact ? extraImpact.withExtra.schedule  : null;
 
   return (
     <PageWrapper>
@@ -46,7 +53,25 @@ export default function CalculatorPage() {
             <PaymentSummaryCards summary={displaySummary} extraImpact={extraImpact} />
           )}
 
-          {/* extra payment impact — only shown when extra payments are entered */}
+          {/* charts section */}
+          {isValid && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card>
+                <PrincipalInterestPie summary={displaySummary} />
+              </Card>
+              <Card>
+                <AmortizationLineChart schedule={displaySchedule} />
+              </Card>
+              <Card className="md:col-span-2">
+                <BalanceAreaChart
+                  schedule={baseScheduleForChart}
+                  scheduleWithExtra={extraScheduleForChart}
+                />
+              </Card>
+            </div>
+          )}
+
+          {/* extra payment analysis */}
           {isValid && extraImpact && (
             <Card>
               <h2 className="text-base font-semibold text-surface-primary dark:text-dark-primary mb-4">
