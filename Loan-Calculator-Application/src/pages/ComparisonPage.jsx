@@ -4,6 +4,7 @@ import ComparisonForm from '../components/comparison/ComparisonForm';
 import ComparisonTable from '../components/comparison/ComparisonTable';
 import WinnerSummary from '../components/comparison/WinnerSummary';
 import ComparisonBarChart from '../components/charts/ComparisonBarChart';
+import { ComparisonExportButtons } from '../components/export/ExportButtons';
 import { useComparison } from '../hooks/useComparison';
 import { BarChart2 } from 'lucide-react';
 import { useCurrency } from '../context/CurrencyContext';
@@ -61,13 +62,16 @@ export default function ComparisonPage() {
 
             {/* comparison table */}
             <Card className="p-0 overflow-hidden">
-              <div className="px-6 py-4 border-b border-surface-border dark:border-dark-border">
-                <h2 className="text-base font-semibold text-surface-primary dark:text-dark-primary">
-                  Side-by-Side Comparison
-                </h2>
-                <p className="text-xs text-surface-secondary dark:text-dark-secondary mt-0.5">
-                  Trophy marks the best value per metric. Difference column compares Scenario A vs B.
-                </p>
+              <div className="px-6 py-4 border-b border-surface-border dark:border-dark-border flex items-center justify-between flex-wrap gap-3">
+                <div>
+                  <h2 className="text-base font-semibold text-surface-primary dark:text-dark-primary">
+                    Side-by-Side Comparison
+                  </h2>
+                  <p className="text-xs text-surface-secondary dark:text-dark-secondary mt-0.5">
+                    Trophy marks the best value per metric. Difference column compares Scenario A vs B.
+                  </p>
+                </div>
+                <ComparisonExportButtons scenarios={scenarios} results={results} />
               </div>
               <div className="p-6">
                 <ComparisonTable scenarios={scenarios} results={results} />
