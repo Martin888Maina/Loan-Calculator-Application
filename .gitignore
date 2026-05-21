@@ -25,6 +25,7 @@ dist-ssr
 claude.md
 CLAUDE.md
 *.claude.md
+.claude/
 
 # Documentation / planning files (do not push to GitHub)
 Digital Ocean Deployment Strategy.md
@@ -32,3 +33,4 @@ converting development code to production code.md
 complete guide to get started and configure digital ocean.md
 digital ocean start up guide.md
 GITHUB strategy for portfolio project application to be deployed to digital ocean.md
+HOW TO UPDATE AND REDEPLOY.md
