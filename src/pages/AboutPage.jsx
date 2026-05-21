@@ -6,7 +6,7 @@ export default function AboutPage() {
     <PageWrapper>
       <div className="max-w-3xl mx-auto space-y-6">
         <div>
-          <h1 className="text-2xl font-bold text-surface-primary dark:text-dark-primary">About LoanCalc</h1>
+          <h1 className="text-2xl font-bold text-surface-primary dark:text-dark-primary">About Loan Calculator Application</h1>
           <p className="text-surface-secondary dark:text-dark-secondary mt-1">
             What this tool does and how the math works.
           </p>
@@ -15,7 +15,7 @@ export default function AboutPage() {
         <Card>
           <h2 className="text-lg font-semibold text-surface-primary dark:text-dark-primary mb-3">What is this?</h2>
           <p className="text-surface-secondary dark:text-dark-secondary leading-relaxed">
-            LoanCalc is a comprehensive loan analysis tool built entirely in the browser. There is no server,
+            Loan Calculator Application is a comprehensive loan analysis tool built entirely in the browser. There is no server,
             no database, and no external APIs. Every calculation — from your monthly payment to the last row of
             your amortization schedule — happens locally using JavaScript math.
           </p>

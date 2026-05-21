@@ -22,7 +22,7 @@ export default function Navbar() {
           {/* logo / brand */}
           <Link to="/" className="flex items-center gap-2 font-bold text-brand-teal text-lg">
             <Calculator size={22} />
-            <span className="hidden sm:inline">LoanCalc</span>
+            <span className="hidden sm:inline">Loan Calculator Application</span>
           </Link>
 
           {/* desktop nav links */}

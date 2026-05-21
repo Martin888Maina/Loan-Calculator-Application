@@ -8,7 +8,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2 text-brand-teal font-semibold">
             <Calculator size={18} />
-            <span>LoanCalc</span>
+            <span>Loan Calculator Application</span>
           </div>
 
           <nav className="flex gap-6 text-sm text-surface-secondary dark:text-dark-secondary">
