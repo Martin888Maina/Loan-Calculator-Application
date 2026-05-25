@@ -37,7 +37,6 @@ const features = [
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-surface-bg dark:bg-dark-bg">
-      {/* hero */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 text-center">
         <div className="inline-flex items-center gap-2 bg-brand-teal/10 text-brand-teal text-sm font-medium px-4 py-1.5 rounded-full mb-6">
           <Calculator size={15} />
@@ -66,7 +65,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* sample stats banner */}
       <section className="bg-brand-teal text-white py-10">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
           {[
@@ -83,7 +81,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* features grid */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <h2 className="text-2xl font-bold text-surface-primary dark:text-dark-primary text-center mb-12">
           Everything you need to understand a loan
@@ -101,7 +98,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA bottom */}
       <section className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 text-center">
         <div className="bg-white dark:bg-dark-card rounded-2xl border border-surface-border dark:border-dark-border p-10 shadow-sm">
           <h2 className="text-2xl font-bold text-surface-primary dark:text-dark-primary mb-3">Ready to run the numbers?</h2>

@@ -38,7 +38,6 @@ export default function CalculatorPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* left panel — inputs */}
         <div className="lg:col-span-1">
           <Card>
             <h2 className="text-base font-semibold text-surface-primary dark:text-dark-primary mb-4">Loan Details</h2>
@@ -46,15 +45,12 @@ export default function CalculatorPage() {
           </Card>
         </div>
 
-        {/* right panel — results */}
         <div className="lg:col-span-2 space-y-6">
 
-          {/* summary statistics cards */}
           {isValid && (
             <PaymentSummaryCards summary={displaySummary} extraImpact={extraImpact} />
           )}
 
-          {/* charts section */}
           {isValid && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Card>
@@ -72,7 +68,6 @@ export default function CalculatorPage() {
             </div>
           )}
 
-          {/* extra payment analysis */}
           {isValid && extraImpact && (
             <Card>
               <h2 className="text-base font-semibold text-surface-primary dark:text-dark-primary mb-4">
@@ -82,7 +77,6 @@ export default function CalculatorPage() {
             </Card>
           )}
 
-          {/* amortization schedule table with export buttons in the header */}
           <Card className="p-0 overflow-hidden">
             <div className="px-6 py-4 border-b border-surface-border dark:border-dark-border flex items-center justify-between flex-wrap gap-3">
               <div>

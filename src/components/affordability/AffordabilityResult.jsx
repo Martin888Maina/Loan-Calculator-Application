@@ -46,7 +46,6 @@ export default function AffordabilityResult({ result, inputs }) {
 
   return (
     <div className="space-y-6">
-      {/* results grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <ResultCard
           icon={DollarSign}
@@ -80,7 +79,6 @@ export default function AffordabilityResult({ result, inputs }) {
         />
       </div>
 
-      {/* DTI gauge section */}
       <div className="bg-white dark:bg-dark-card rounded-xl border border-surface-border dark:border-dark-border p-6">
         <h3 className="text-sm font-semibold text-surface-primary dark:text-dark-primary mb-1">
           Projected DTI with New Loan
@@ -113,7 +111,6 @@ export default function AffordabilityResult({ result, inputs }) {
         </div>
       </div>
 
-      {/* explanation card */}
       <div className="bg-brand-blue/5 border border-brand-blue/20 rounded-xl p-5">
         <h3 className="text-sm font-semibold text-surface-primary dark:text-dark-primary mb-2">
           How DTI ratios work

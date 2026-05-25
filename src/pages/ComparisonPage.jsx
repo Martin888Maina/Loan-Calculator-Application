@@ -38,7 +38,6 @@ export default function ComparisonPage() {
       </div>
 
       <div className="space-y-6">
-        {/* scenario input panels */}
         <Card>
           <div className="flex items-center gap-2 mb-5">
             <BarChart2 size={18} className="text-brand-teal" />
@@ -57,10 +56,8 @@ export default function ComparisonPage() {
 
         {anyReady && (
           <>
-            {/* winner callout banner */}
-            <WinnerSummary scenarios={scenarios} results={results} />
+              <WinnerSummary scenarios={scenarios} results={results} />
 
-            {/* comparison table */}
             <Card className="p-0 overflow-hidden">
               <div className="px-6 py-4 border-b border-surface-border dark:border-dark-border flex items-center justify-between flex-wrap gap-3">
                 <div>
@@ -78,12 +75,10 @@ export default function ComparisonPage() {
               </div>
             </Card>
 
-            {/* comparison bar chart */}
             <Card>
               <ComparisonBarChart scenarios={scenarios} results={results} />
             </Card>
 
-            {/* per-scenario detail cards */}
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
               {scenarios.map((s, i) => {
                 const r = results[i];

@@ -33,7 +33,6 @@ export default function ComparisonBarChart({ scenarios, results }) {
   const ready = results.map((r, i) => ({ r, s: scenarios[i] })).filter(({ r }) => r !== null);
   if (ready.length < 2) return null;
 
-  // three grouped bar datasets — monthly payment, total interest, total paid
   const metrics = [
     { key: 'monthlyPayment', label: 'Monthly Payment' },
     { key: 'totalInterest',  label: 'Total Interest'  },

@@ -1,7 +1,6 @@
 import { useCurrency } from '../../context/CurrencyContext';
 import { TrendingDown, Clock, Calendar, ArrowRight, PiggyBank } from 'lucide-react';
 
-// one column in the comparison table
 function ScenarioColumn({ label, summary, highlight, format }) {
   const { monthlyPayment, totalInterest, totalPaid, interestRatio, payoffDate, totalMonths } = summary;
   const years = Math.floor(totalMonths / 12);
@@ -55,7 +54,6 @@ export default function ExtraPaymentImpact({ impact }) {
 
   return (
     <div className="space-y-4">
-      {/* savings headline banner */}
       {interestSaved > 0 && (
         <div className="bg-brand-green/10 border border-brand-green/30 rounded-xl p-5">
           <div className="flex flex-wrap items-center gap-6">
@@ -96,7 +94,6 @@ export default function ExtraPaymentImpact({ impact }) {
         </div>
       )}
 
-      {/* side-by-side comparison columns */}
       <div className="flex flex-col sm:flex-row gap-4 items-stretch">
         <ScenarioColumn
           label="Without extra payments"
@@ -115,7 +112,6 @@ export default function ExtraPaymentImpact({ impact }) {
         />
       </div>
 
-      {/* breakdown of what the extra payments consist of */}
       {withExtra.summary.totalExtra > 0 && (
         <div className="flex items-center gap-2 text-xs text-surface-secondary dark:text-dark-secondary bg-gray-50 dark:bg-gray-800/50 rounded-lg px-4 py-2.5">
           <TrendingDown size={13} className="text-brand-green flex-shrink-0" />

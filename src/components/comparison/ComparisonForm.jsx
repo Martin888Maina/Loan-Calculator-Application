@@ -22,7 +22,6 @@ function ScenarioPanel({ scenario, index, onChange, onReset, onRemove, canRemove
 
   return (
     <div className={`rounded-xl border-2 ${colors.border} ${colors.bg} p-5 flex-1 min-w-0`}>
-      {/* panel header */}
       <div className="flex items-center justify-between mb-4">
         <span className={`text-sm font-bold px-2.5 py-1 rounded-full ${colors.badge}`}>
           {scenario.label}
@@ -50,19 +49,16 @@ function ScenarioPanel({ scenario, index, onChange, onReset, onRemove, canRemove
       </div>
 
       <div className="space-y-3">
-        {/* loan amount */}
         <div>
           <label className="label">Loan Amount</label>
           <input type="number" className="input-field" placeholder="e.g. 1000000" {...field('loanAmount')} />
         </div>
 
-        {/* interest rate */}
         <div>
           <label className="label">Annual Rate (%)</label>
           <input type="number" step="0.01" className="input-field" placeholder="e.g. 12" {...field('annualRate')} />
         </div>
 
-        {/* term */}
         <div>
           <label className="label">Loan Term</label>
           <div className="flex gap-2">
@@ -79,7 +75,6 @@ function ScenarioPanel({ scenario, index, onChange, onReset, onRemove, canRemove
           </div>
         </div>
 
-        {/* loan type */}
         <div>
           <label className="label flex items-center gap-1">
             Loan Type
@@ -92,7 +87,6 @@ function ScenarioPanel({ scenario, index, onChange, onReset, onRemove, canRemove
           </select>
         </div>
 
-        {/* ARM extra fields */}
         {loanType === 'arm' && (
           <div className="grid grid-cols-2 gap-2">
             <div>
@@ -106,7 +100,6 @@ function ScenarioPanel({ scenario, index, onChange, onReset, onRemove, canRemove
           </div>
         )}
 
-        {/* interest-only extra field */}
         {loanType === 'interest-only' && (
           <div>
             <label className="label">IO Period (yrs)</label>
@@ -114,7 +107,6 @@ function ScenarioPanel({ scenario, index, onChange, onReset, onRemove, canRemove
           </div>
         )}
 
-        {/* balloon extra field */}
         {loanType === 'balloon' && (
           <div>
             <label className="label flex items-center gap-1">
@@ -125,7 +117,6 @@ function ScenarioPanel({ scenario, index, onChange, onReset, onRemove, canRemove
           </div>
         )}
 
-        {/* start date */}
         <div>
           <label className="label">Start Date</label>
           <input type="month" className="input-field" {...field('startDate')} />
@@ -153,7 +144,6 @@ export default function ComparisonForm({ scenarios, onUpdate, onAdd, onRemove, o
         ))}
       </div>
 
-      {/* add scenario button — hidden once we hit 3 */}
       {scenarios.length < 3 && (
         <button
           type="button"

@@ -7,7 +7,6 @@ export const DEFAULTS = {
   loanType: 'fixed',
 };
 
-// loan type options
 export const LOAN_TYPES = [
   { value: 'fixed', label: 'Fixed Rate' },
   { value: 'arm', label: 'Adjustable Rate (ARM)' },
@@ -15,7 +14,6 @@ export const LOAN_TYPES = [
   { value: 'balloon', label: 'Balloon Payment' },
 ];
 
-// DTI thresholds used in affordability analysis
 export const DTI_THRESHOLDS = {
   frontEnd: 0.28,
   backEnd: 0.36,

@@ -88,7 +88,6 @@ export default function LoanForm() {
   return (
     <div className="space-y-6">
 
-      {/* loan amount — slider from 10k to 50M */}
       <SliderInput
         label="Loan Amount"
         name="loanAmount"
@@ -102,7 +101,6 @@ export default function LoanForm() {
         error={errors.loanAmount}
       />
 
-      {/* interest rate — slider 0 to 30% */}
       <SliderInput
         label="Annual Interest Rate"
         name="annualRate"
@@ -117,7 +115,6 @@ export default function LoanForm() {
         error={errors.annualRate}
       />
 
-      {/* loan term */}
       <div>
         <label className="label">Loan Term</label>
         <div className="flex gap-2 mb-1.5">
@@ -166,13 +163,11 @@ export default function LoanForm() {
         )}
       </div>
 
-      {/* start date */}
       <div>
         <label className="label">Start Date</label>
         <input type="month" className="input-field" {...register('startDate')} />
       </div>
 
-      {/* loan type selector */}
       <div>
         <label className="label flex items-center gap-1">
           Loan Type
@@ -198,7 +193,6 @@ export default function LoanForm() {
         </div>
       </div>
 
-      {/* ARM extra fields */}
       {loanType === 'arm' && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 bg-brand-blue/5 rounded-lg border border-brand-blue/20">
           <div>
@@ -215,7 +209,6 @@ export default function LoanForm() {
         </div>
       )}
 
-      {/* interest-only extra field */}
       {loanType === 'interest-only' && (
         <div className="p-4 bg-brand-blue/5 rounded-lg border border-brand-blue/20">
           <label className="label flex items-center gap-1">
@@ -226,7 +219,6 @@ export default function LoanForm() {
         </div>
       )}
 
-      {/* balloon extra field */}
       {loanType === 'balloon' && (
         <div className="p-4 bg-brand-amber/5 rounded-lg border border-brand-amber/20">
           <label className="label flex items-center gap-1">
@@ -237,7 +229,6 @@ export default function LoanForm() {
         </div>
       )}
 
-      {/* extra payments */}
       <div>
         <h3 className="text-sm font-semibold text-surface-primary dark:text-dark-primary mb-3">
           Extra Payments <span className="text-surface-secondary dark:text-dark-secondary font-normal">(optional)</span>

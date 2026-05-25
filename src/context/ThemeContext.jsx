@@ -9,7 +9,6 @@ export function ThemeProvider({ children }) {
   });
 
   useEffect(() => {
-    // apply or remove the dark class on the html element
     const root = document.documentElement;
     if (isDark) {
       root.classList.add('dark');

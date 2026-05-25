@@ -30,7 +30,6 @@ export function CurrencyProvider({ children }) {
     }
   };
 
-  // format a number as currency — uses the browser's Intl API
   const format = (amount) => {
     if (amount === null || amount === undefined || isNaN(amount)) return '—';
     return new Intl.NumberFormat(currency.locale, {

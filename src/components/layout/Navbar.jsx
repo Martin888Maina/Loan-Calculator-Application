@@ -19,13 +19,11 @@ export default function Navbar() {
     <nav className="sticky top-0 z-50 bg-white dark:bg-dark-card border-b border-surface-border dark:border-dark-border shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* logo / brand */}
           <Link to="/" className="flex items-center gap-2 font-bold text-brand-teal text-lg">
             <Calculator size={22} />
             <span className="hidden sm:inline">Loan Calculator Application</span>
           </Link>
 
-          {/* desktop nav links */}
           <div className="hidden md:flex items-center gap-1">
             {navLinks.map(({ to, label, icon: Icon }) => {
               const active = location.pathname === to;
@@ -46,9 +44,7 @@ export default function Navbar() {
             })}
           </div>
 
-          {/* right controls */}
           <div className="flex items-center gap-2">
-            {/* currency picker */}
             <select
               value={currency.code}
               onChange={e => changeCurrency(e.target.value)}
@@ -59,7 +55,6 @@ export default function Navbar() {
               ))}
             </select>
 
-            {/* dark mode toggle */}
             <button
               onClick={toggleTheme}
               className="p-2 rounded-lg text-surface-secondary dark:text-dark-secondary hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
@@ -71,7 +66,6 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* mobile bottom tab bar */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-dark-card border-t border-surface-border dark:border-dark-border z-50">
         <div className="flex justify-around py-2">
           {navLinks.map(({ to, label, icon: Icon }) => {

@@ -24,7 +24,6 @@ export default function AffordabilityForm({ onChange }) {
 
   return (
     <div className="space-y-5">
-      {/* income */}
       <div>
         <label className="label flex items-center gap-1">
           Gross Monthly Income
@@ -44,7 +43,6 @@ export default function AffordabilityForm({ onChange }) {
         )}
       </div>
 
-      {/* existing debts */}
       <div>
         <label className="label flex items-center gap-1">
           Existing Monthly Debt Payments
@@ -61,7 +59,6 @@ export default function AffordabilityForm({ onChange }) {
         )}
       </div>
 
-      {/* rate and term */}
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="label flex items-center gap-1">
@@ -96,7 +93,6 @@ export default function AffordabilityForm({ onChange }) {
         </div>
       </div>
 
-      {/* down payment */}
       <div>
         <label className="label flex items-center gap-1">
           Down Payment

@@ -9,14 +9,10 @@ const initialState = {
     termUnit: 'years',
     startDate: new Date().toISOString().slice(0, 7), // YYYY-MM
     loanType: 'fixed',
-    // ARM fields
     armInitialPeriod: '',
     armNewRate: '',
-    // interest-only fields
     interestOnlyPeriod: '',
-    // balloon fields
     balloonAmortYears: '',
-    // extra payments
     extraMonthly: '',
     lumpSumAmount: '',
     lumpSumMonth: '',
